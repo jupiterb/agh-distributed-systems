@@ -28,18 +28,13 @@ public class IntermediarySystem {
         channel.exchangeDeclare(SUPPLY_EXCHANGE, BuiltinExchangeType.TOPIC);
     }
 
-    public String initQueue(String queueName, String exchangeName, String routingKey) throws IOException {
-        if (queueName == null) {
-            queueName = channel.queueDeclare().getQueue();
-        } else{
-            channel.queueDeclare(queueName, true, false, false, null);
-        }
+    public void initQueue(String queueName, String exchangeName, String routingKey) throws IOException {
+        channel.queueDeclare(queueName, true, false, false, null);
         channel.queueBind(queueName, exchangeName, routingKey);
-        return queueName;
     }
 
-    public void receiveMessages(String tag, String name) throws IOException {
-        channel.basicConsume(tag, false, "", new DefaultConsumer(channel) {
+    public void receiveMessages(String name) throws IOException {
+        channel.basicConsume(name, false, "", new DefaultConsumer(channel) {
            @Override
            public void handleDelivery(String tag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                int id = Integer.parseInt(envelope.getRoutingKey().split("\\.")[1]);

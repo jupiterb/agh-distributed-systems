@@ -20,12 +20,11 @@ public class Crew {
     public void run() {
 
         IntermediarySystem intermediarySystem;
-        String tag;
 
         try {
             intermediarySystem = new IntermediarySystem();
-            tag = intermediarySystem.initQueue(null, IntermediarySystem.SUPPLY_EXCHANGE, name + ".*");
-            intermediarySystem.receiveMessages(tag, name);
+            intermediarySystem.initQueue(name, IntermediarySystem.SUPPLY_EXCHANGE, name + ".*");
+            intermediarySystem.receiveMessages(name);
         } catch (IOException | TimeoutException e) {
             System.out.println("Cannot set up intermediary system:");
             e.printStackTrace();
