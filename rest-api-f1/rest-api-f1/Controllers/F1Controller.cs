@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using rest_api_f1.Logic;
 using rest_api_f1.Models;
-using rest_api_f1.Models.Logic;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,12 +17,12 @@ namespace rest_api_f1.Controllers
         [HttpGet("Rank/{comparisonName}")]
         public IActionResult GetRank(string comparisonName, [FromQuery] IEnumerable<string> competitors)
         {
-            try
+            if (comparisonsRepository.Contains(comparisonName))
             {
                 var ranking = comparisonsRepository.Rank(comparisonName, competitors);
                 return Ok(ranking);
             }
-            catch
+            else
             {
                 return NotFound("Comparison with such a name don't exist");
             }
@@ -31,12 +31,12 @@ namespace rest_api_f1.Controllers
         [HttpGet("Occurances/{comparisonName}")]
         public IActionResult GetCompetitors(string comparisonName)
         {
-            try
+            if (comparisonsRepository.Contains(comparisonName))
             {
                 var occurances = comparisonsRepository.GetCompetitorsOccurances(comparisonName);
                 return Ok(occurances);
             }
-            catch
+            else
             {
                 return NotFound("Comparison with such a name don't exist");
             }
@@ -58,14 +58,14 @@ namespace rest_api_f1.Controllers
         [HttpPut("AddCompetiton/RaceResult/{comparisonName}")]
         public async Task<IActionResult> PutRaceResult(string comparisonName, [FromBody] CompetitionInfo competitionInfo)
         {
-            try
+            if (comparisonsRepository.Contains(comparisonName))
             {
                 var created = await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "results");
                 return Ok();
             }
-            catch
+            else
             {
-                return NotFound("Comparison don't exist or competition don't exist");
+                return NotFound("Comparison with such a name don't exist");
             }
             
         }
@@ -73,12 +73,12 @@ namespace rest_api_f1.Controllers
         [HttpPut("AddCompetiton/RaceQualifying/{comparisonName}")]
         public async Task<IActionResult> PutRaceQualifying(string comparisonName, [FromBody] CompetitionInfo competitionInfo)
         {
-            try
+            if (comparisonsRepository.Contains(comparisonName))
             {
                 var created = await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "qualifying");
                 return Ok();
             }
-            catch
+            else
             {
                 return NotFound("Comparison don't exist or competition don't exist");
             }
@@ -87,13 +87,13 @@ namespace rest_api_f1.Controllers
         [HttpPut("AddCompetiton/SesonResult/{comparisonName}")]
         public async Task<IActionResult> PutSesonResult(string comparisonName, [FromBody] CompetitionSeasonInfo competitionSeasonInfo)
         {
-            try
+            if (comparisonsRepository.Contains(comparisonName))
             {
                 var competitionInfo = new CompetitionInfo { Priority = competitionSeasonInfo.Priority, Season = competitionSeasonInfo.Season };
                 var created = await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "driverStandings");
                 return Ok();
             }
-            catch
+            else
             {
                 return NotFound("Comparison don't exist or competition don't exist");
             }

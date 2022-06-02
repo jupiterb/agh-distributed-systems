@@ -9,7 +9,7 @@ using System.Web;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace rest_api_f1.Models.Logic
+namespace rest_api_f1.Logic
 {
     public class Competition
     {

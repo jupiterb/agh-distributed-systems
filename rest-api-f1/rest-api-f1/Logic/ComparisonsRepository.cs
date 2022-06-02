@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
+using rest_api_f1.Models;
 
-
-namespace rest_api_f1.Models.Logic
+namespace rest_api_f1.Logic
 {
     public class ComparisonsRepository
     {
         private static List<string> comaprisonNames = new List<string>();
 
         private static Dictionary<string, List<Competition>> competitions = new Dictionary<string, List<Competition>>();
+
+
+        public bool Contains(string comparisonName)
+        {
+            return comaprisonNames.Contains(comparisonName);
+        }
 
         public bool TryAddComparison(string comparisonName)
         {
