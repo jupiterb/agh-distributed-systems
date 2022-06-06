@@ -43,7 +43,7 @@ module SmartHome {
 
     interface Device {
         idempotent string GetName();
-        idempotent float GetEnergyConsumption();
+        float GetEnergyConsumption();
     }
 
     interface TemperatureController extends Device {

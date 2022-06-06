@@ -2025,7 +2025,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -2379,7 +2379,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -2909,7 +2909,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -3563,7 +3563,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -4128,7 +4128,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -4565,7 +4565,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -5108,7 +5108,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -5533,7 +5533,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -6029,7 +6029,7 @@ namespace SmartHome
             var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _GetEnergyConsumption_name,
-                global::Ice.OperationMode.Idempotent,
+                global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
@@ -6740,7 +6740,7 @@ namespace SmartHome
         public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
         iceD_GetEnergyConsumption(Device obj, global::IceInternal.Incoming inS, global::Ice.Current current)
         {
-            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Idempotent, current.mode);
+            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
             inS.readEmptyParams();
             var ret = obj.GetEnergyConsumption(current);
             var ostr = inS.startWriteParams();

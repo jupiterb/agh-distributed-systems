@@ -470,7 +470,7 @@ if 'DevicePrx' not in _M_SmartHome.__dict__:
     Device._ice_type = _M_SmartHome._t_DeviceDisp
 
     Device._op_GetName = IcePy.Operation('GetName', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, False, None, (), (), (), ((), IcePy._t_string, False, 0), ())
-    Device._op_GetEnergyConsumption = IcePy.Operation('GetEnergyConsumption', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, False, None, (), (), (), ((), IcePy._t_float, False, 0), ())
+    Device._op_GetEnergyConsumption = IcePy.Operation('GetEnergyConsumption', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), ((), IcePy._t_float, False, 0), ())
 
     _M_SmartHome.Device = Device
     del Device
