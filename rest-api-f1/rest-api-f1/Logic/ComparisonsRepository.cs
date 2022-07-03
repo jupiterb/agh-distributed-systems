@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
 using rest_api_f1.Models;
+using rest_api_f1.Exceptions;
 
 namespace rest_api_f1.Logic
 {
@@ -12,12 +13,6 @@ namespace rest_api_f1.Logic
         private static List<string> comaprisonNames = new List<string>();
 
         private static Dictionary<string, List<Competition>> competitions = new Dictionary<string, List<Competition>>();
-
-
-        public bool Contains(string comparisonName)
-        {
-            return comaprisonNames.Contains(comparisonName);
-        }
 
         public bool TryAddComparison(string comparisonName)
         {
@@ -44,6 +39,8 @@ namespace rest_api_f1.Logic
 
         public async Task<bool> TryAddCompetiton(string comparisonName, CompetitionInfo competitionInfo, string details)
         {
+            AssertComparisonExists(comparisonName);
+
             var competition = competitions[comparisonName]
                 .FirstOrDefault(c => c.Season == competitionInfo.Season && c.Round == competitionInfo.Round && c.Details == details);
 
@@ -70,6 +67,8 @@ namespace rest_api_f1.Logic
 
         public Dictionary<string, int> GetCompetitorsOccurances(string comparisonName)
         {
+            AssertComparisonExists(comparisonName);
+
             Dictionary<string, int> competitorsOccurances = new();
 
             competitions[comparisonName]
@@ -81,7 +80,16 @@ namespace rest_api_f1.Logic
 
         public ResultTable Rank(string comparisonName, IEnumerable<string> competitors)
         {
+            AssertComparisonExists(comparisonName);
             return Ranker.Rank(competitions[comparisonName], competitors);
+        }
+
+        private static void AssertComparisonExists(string comparisonName)
+        {
+            if (!comaprisonNames.Contains(comparisonName))
+            {
+                throw new ComparisonNotExistException(comparisonName);
+            }
         }
 
         private static void CountCompetitor(string name, Dictionary<string, int> competitorsOccurances)

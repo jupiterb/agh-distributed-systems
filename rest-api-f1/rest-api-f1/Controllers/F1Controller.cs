@@ -8,41 +8,27 @@ using System.Threading.Tasks;
 
 namespace rest_api_f1.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/{comparisonName}")]
     [ApiController]
     public class F1Controller : ControllerBase
     {
         private readonly ComparisonsRepository comparisonsRepository = new();
 
-        [HttpGet("Rank/{comparisonName}")]
+        [HttpGet("rank")]
         public IActionResult GetRank(string comparisonName, [FromQuery] IEnumerable<string> competitors)
         {
-            if (comparisonsRepository.Contains(comparisonName))
-            {
-                var ranking = comparisonsRepository.Rank(comparisonName, competitors);
-                return Ok(ranking);
-            }
-            else
-            {
-                return NotFound("Comparison with such a name don't exist");
-            }
+            var ranking = comparisonsRepository.Rank(comparisonName, competitors);
+            return Ok(ranking);
         }
 
-        [HttpGet("Occurances/{comparisonName}")]
+        [HttpGet("occurances")]
         public IActionResult GetCompetitors(string comparisonName)
         {
-            if (comparisonsRepository.Contains(comparisonName))
-            {
-                var occurances = comparisonsRepository.GetCompetitorsOccurances(comparisonName);
-                return Ok(occurances);
-            }
-            else
-            {
-                return NotFound("Comparison with such a name don't exist");
-            }
+            var occurances = comparisonsRepository.GetCompetitorsOccurances(comparisonName);
+            return Ok(occurances);
         }
 
-        [HttpPost("{comparisonName}")]
+        [HttpPost("")]
         public IActionResult Post(string comparisonName)
         {
             if (comparisonsRepository.TryAddComparison(comparisonName))
@@ -55,51 +41,30 @@ namespace rest_api_f1.Controllers
             }
         }
         
-        [HttpPut("AddCompetiton/RaceResult/{comparisonName}")]
+        [HttpPut("race")]
         public async Task<IActionResult> PutRaceResult(string comparisonName, [FromBody] CompetitionInfo competitionInfo)
         {
-            if (comparisonsRepository.Contains(comparisonName))
-            {
-                var created = await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "results");
-                return Ok();
-            }
-            else
-            {
-                return NotFound("Comparison with such a name don't exist");
-            }
-            
+            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "results");
+            return Ok();
+
         }
 
-        [HttpPut("AddCompetiton/RaceQualifying/{comparisonName}")]
+        [HttpPut("qualifying")]
         public async Task<IActionResult> PutRaceQualifying(string comparisonName, [FromBody] CompetitionInfo competitionInfo)
         {
-            if (comparisonsRepository.Contains(comparisonName))
-            {
-                var created = await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "qualifying");
-                return Ok();
-            }
-            else
-            {
-                return NotFound("Comparison don't exist or competition don't exist");
-            }
+            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "qualifying");
+            return Ok();
         }
 
-        [HttpPut("AddCompetiton/SesonResult/{comparisonName}")]
+        [HttpPut("sesonResult")]
         public async Task<IActionResult> PutSesonResult(string comparisonName, [FromBody] CompetitionSeasonInfo competitionSeasonInfo)
         {
-            if (comparisonsRepository.Contains(comparisonName))
-            {
-                var competitionInfo = new CompetitionInfo { Priority = competitionSeasonInfo.Priority, Season = competitionSeasonInfo.Season };
-                var created = await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "driverStandings");
-                return Ok();
-            }
-            else
-            {
-                return NotFound("Comparison don't exist or competition don't exist");
-            }
+            var competitionInfo = new CompetitionInfo { Priority = competitionSeasonInfo.Priority, Season = competitionSeasonInfo.Season };
+            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "driverStandings");
+            return Ok();
         }
 
-        [HttpDelete("{comparisonName}")]
+        [HttpDelete("")]
         public void Delete(string comparisonName)
         {
             comparisonsRepository.DeleteComparison(comparisonName);
