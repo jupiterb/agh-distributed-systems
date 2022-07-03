@@ -37,19 +37,19 @@ namespace rest_api_f1.Logic
             competitions.Remove(comparisonName);
         }
 
-        public async Task<bool> TryAddCompetiton(string comparisonName, CompetitionInfo competitionInfo, string details)
+        public async Task<bool> TryAddCompetiton(string comparisonName, CompetitionInfo competitionInfo, CompetitionType competitionType)
         {
             AssertComparisonExists(comparisonName);
 
             var competition = competitions[comparisonName]
-                .FirstOrDefault(c => c.Season == competitionInfo.Season && c.Round == competitionInfo.Round && c.Details == details);
+                .FirstOrDefault(c => c.Equals(competitionInfo.Season, competitionInfo.Round, competitionType));
 
             if (competition == null)
             {
                 var allCompetitons = new List<Competition>();
                 competitions.Values.ToList().ForEach(criteriaList => criteriaList.ForEach(allCompetitons.Add));
 
-                var newCompetition = new Competition(competitionInfo.Priority, competitionInfo.Season, competitionInfo.Round, details);
+                var newCompetition = new Competition(competitionInfo.Priority, competitionInfo.Season, competitionInfo.Round, competitionType);
                 await newCompetition.GetResults(allCompetitons);
 
                 if (newCompetition.HasResults)

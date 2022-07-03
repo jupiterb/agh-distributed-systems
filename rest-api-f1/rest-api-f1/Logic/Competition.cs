@@ -17,7 +17,7 @@ namespace rest_api_f1.Logic
 
         public int? Round { get; private set; }
 
-        public string Details { get; private set; }
+        public CompetitionType Type { get; private set; }
 
         public int Priority { get; set; }
 
@@ -27,10 +27,10 @@ namespace rest_api_f1.Logic
 
         private static readonly HttpClient client = new HttpClient();
 
-        public Competition(int priority, int season, int? round, string details)
+        public Competition(int priority, int season, int? round, CompetitionType type)
         {
             Priority = priority;
-            Details = details;
+            Type = type;
             Season = season;
             Round = round;
         }
@@ -62,25 +62,28 @@ namespace rest_api_f1.Logic
             static async Task Main(Competition competition)
             {
                 HttpResponseMessage response;
+
                 string resultName = string.Empty;
+                string resultEndpoint = competition.Type.ToString().ToLower();
 
                 if (competition.Round != null)
                 {
-                    if (competition.Details == "results")
+                    if (competition.Type == CompetitionType.Results)
                     {
                         resultName = "Result";
                     }
-                    else if (competition.Details == "qualifying")
+                    else if (competition.Type == CompetitionType.Qualifying)
                     {
                         resultName = "QualifyingResult";
                     }
-                    response = await client.GetAsync($"https://ergast.com/api/f1/{competition.Season}/{competition.Round}/{competition.Details}");
+                    response = await client.GetAsync($"https://ergast.com/api/f1/{competition.Season}/{competition.Round}/{resultEndpoint}");
                 }
                 else
                 {
-                    resultName = "DriverStanding";
-                    response = await client.GetAsync($"https://ergast.com/api/f1/{competition.Season}/{competition.Details}");
+                    resultName = competition.Type.ToString();
+                    response = await client.GetAsync($"https://ergast.com/api/f1/{competition.Season}/{resultEndpoint}");
                 }
+
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
@@ -98,14 +101,19 @@ namespace rest_api_f1.Logic
             await Main(this);
         }
 
+        public bool Equals(int season, int? round, CompetitionType type)
+        {
+            return Season == season && Round == round && Type == type;
+        }
+
         public bool Equals(Competition other)
         {
-            return Season == other.Season && Round == other.Round && Details == other.Details;
+            return Equals(other.Season, other.Round, other.Type);
         }
 
         public override string ToString()
         {
-            return $"{Season}{(Round == null ? string.Empty : "/" + Round)}/{Details}";
+            return $"{Season}{(Round == null ? string.Empty : "/" + Round)}/{Type}";
         }
     }
 }

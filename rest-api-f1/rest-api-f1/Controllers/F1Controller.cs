@@ -44,7 +44,7 @@ namespace rest_api_f1.Controllers
         [HttpPut("race")]
         public async Task<IActionResult> PutRaceResult(string comparisonName, [FromBody] CompetitionInfo competitionInfo)
         {
-            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "results");
+            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, CompetitionType.Results);
             return Ok();
 
         }
@@ -52,7 +52,7 @@ namespace rest_api_f1.Controllers
         [HttpPut("qualifying")]
         public async Task<IActionResult> PutRaceQualifying(string comparisonName, [FromBody] CompetitionInfo competitionInfo)
         {
-            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "qualifying");
+            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, CompetitionType.Qualifying);
             return Ok();
         }
 
@@ -60,7 +60,7 @@ namespace rest_api_f1.Controllers
         public async Task<IActionResult> PutSesonResult(string comparisonName, [FromBody] CompetitionSeasonInfo competitionSeasonInfo)
         {
             var competitionInfo = new CompetitionInfo { Priority = competitionSeasonInfo.Priority, Season = competitionSeasonInfo.Season };
-            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, "driverStandings");
+            await comparisonsRepository.TryAddCompetiton(comparisonName, competitionInfo, CompetitionType.DriverStanding);
             return Ok();
         }
 
